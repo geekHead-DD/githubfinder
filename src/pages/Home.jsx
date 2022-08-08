@@ -6,7 +6,7 @@ function Home() {
   return (
     <>
         <h1 className='text-6xl font-bold card-title'>GitHub Finder App</h1>
-        <p className='text-2xl mb-10'>by RyanBriggsDev</p>
+        <p className='text-2xl mt-5 mb-10'>Made with ❤️ by Debarghya Datta</p>
         <UserSearch />
         <UserResults />
     </>

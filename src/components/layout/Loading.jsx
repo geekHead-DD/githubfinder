@@ -1,13 +1,13 @@
 import React from 'react'
-import Skateboarding from '../assets/Skateboarding.gif'
+import cheems from '../assets/cheems.gif'
 
 function Loading() {
   return (
       <div className='w-100 mt-20'>
         <img 
-            src={Skateboarding} 
+            src={cheems} 
             alt="Loading..."
-            width={50}
+            width={200}
             className="text-center mx-auto"    
         />   
       </div>
