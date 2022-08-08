@@ -1,0 +1,68 @@
+import React, { useState, useContext } from 'react'
+import AlertContext from '../../context/alert/AlertContext'
+import GithubContext from '../../context/github/GithubContext'
+import alertContext from '../../context/alert/AlertContext'
+import { searchUsers } from '../../context/github/GithubActions'
+
+function UserSearch() {
+    
+    const [text, setText] = useState('')
+
+    const {users, dispatch} = useContext(GithubContext)
+    const {setAlert} = useContext(AlertContext)
+
+    const handleChange = (e) => setText(e.target.value)
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (text === '') {
+            setAlert('Please enter something', 'error')
+        } else {
+            dispatch({type: 'SET_LOADING'})
+            const users = await searchUsers(text)
+            dispatch({type: 'GET_USERS', payload: users})
+            setText('')
+        } 
+    }
+
+    return (
+    <div className='grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 mb-8 gap-8'>
+        <div>
+            {/* <form onSubmit={handleSubmit}>
+                <div className="form-control">
+                    <div className="relative">
+                        <input className="w-full pr-40 bg-gray-200 input input-lg text-black" 
+                        placeholder='Search by Username' 
+                        value={text}
+                        onChange={handleChange}
+                        />
+                        <button className="absolute top-0 right-0 rounded-l-none w-36 btn btn-lg">Go</button>
+                    </div>
+                </div>
+            </form> */}
+            
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
+                <form onSubmit={handleSubmit}>
+                <div class="relative">
+                    <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="search"  class="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder='Search by Username' 
+                        value={text}
+                        onChange={handleChange} required=""/>
+                    <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                </div>
+            </form>
+
+            
+        </div>
+        {users.length > 0 && (
+            <div>
+                <button className="btn btn-ghost btn-sl" onClick={() => dispatch({type: 'CLEAR_USERS'})}>Clear</button>
+            </div>
+        )}
+    </div>
+  )
+}
+
+export default UserSearch
